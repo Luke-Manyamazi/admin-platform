@@ -1,0 +1,24 @@
+# ─── Line Endings ──────────────────────────────────────────────────────────────
+# Enforce LF on checkout for all text files (cross-platform monorepo)
+* text=auto eol=lf
+
+# ─── Explicit overrides ────────────────────────────────────────────────────────
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# ─── Binary files — never touch line endings ──────────────────────────────────
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
+*.gz   binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.eot  binary
+
+# ─── Lock files — diff as text but keep as-is ─────────────────────────────────
+pnpm-lock.yaml linguist-generated=true
