@@ -1,24 +1,31 @@
-{
+﻿{
   "name": "@admin-platform/ui",
   "version": "0.0.1",
   "private": true,
-  "description": "ADMIN UI — Shared React component library with ADMIN brand design tokens",
+  "description": "ADMIN shared React component library — brand tokens, Tailwind preset, and base UI components",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "build": "tsc --noEmit",
     "type-check": "tsc --noEmit",
+    "lint": "eslint src",
     "clean": "rimraf dist"
   },
-  "devDependencies": {
-    "@admin-platform/config": "workspace:*"
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.0"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@admin-platform/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.7.0"
   }
 }
