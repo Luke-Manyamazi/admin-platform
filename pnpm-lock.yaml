@@ -67,6 +67,10 @@ importers:
         version: link:../config
 
   packages/events:
+    dependencies:
+      '@admin-platform/types':
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@admin-platform/config':
         specifier: workspace:*
