@@ -2,7 +2,7 @@
   "name": "@admin-platform/database",
   "version": "0.0.1",
   "private": true,
-  "description": "ADMIN Database — Prisma schema, migrations, and generated client (PostgreSQL)",
+  "description": "ADMIN Database — Prisma schema, migrations, and generated client (PostgreSQL / AWS RDS)",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
@@ -13,11 +13,18 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:seed": "tsx src/seed.ts",
+    "db:reset": "prisma migrate reset",
     "lint": "echo 'No lint for database package'",
     "type-check": "tsc --noEmit",
-    "clean": "rimraf node_modules/.prisma"
+    "clean": "rimraf src/generated node_modules/.prisma"
+  },
+  "dependencies": {
+    "@admin-platform/types": "workspace:*",
+    "@prisma/client": "^6.0.0"
   },
   "devDependencies": {
-    "@admin-platform/config": "workspace:*"
+    "@admin-platform/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "prisma": "^6.0.0"
   }
 }

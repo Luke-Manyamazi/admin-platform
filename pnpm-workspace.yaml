@@ -3,7 +3,22 @@ packages:
   - 'services/*'
   - 'packages/*'
 
-# Build script approvals (pnpm security policy)
-# esbuild requires a native binary build step — approved for tsx transpilation
+# Build script approvals (pnpm v11 security policy).
+# Packages listed under allowBuilds are explicitly permitted to run
+# postinstall / build scripts. Set to true = allowed, false = blocked.
+#   esbuild         — native binary required by tsx / esbuild bundler
+#   prisma          — generates query-engine binary on install
+#   @prisma/client  — runs postinstall to wire the generated client
+#   @prisma/engines — downloads the Rust query-engine binary for this platform
+allowBuilds:
+  esbuild: true
+  prisma: true
+  '@prisma/client': true
+  '@prisma/engines': true
+
+# Legacy list — kept for pnpm versions that read onlyBuiltDependencies
 onlyBuiltDependencies:
   - esbuild
+  - prisma
+  - '@prisma/client'
+  - '@prisma/engines'

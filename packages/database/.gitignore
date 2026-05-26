@@ -1,0 +1,5 @@
+# Generated Prisma client — recreated by `pnpm db:generate`
+src/generated/
+
+# pnpm virtual store for this package
+node_modules/
