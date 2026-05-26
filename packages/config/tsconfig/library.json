@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "ADMIN Library Package",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2022",
+
+    // composite: true enables incremental project reference builds
+    // Each workspace overrides outDir/rootDir — do NOT set them here
+    "composite": true
+  }
+}

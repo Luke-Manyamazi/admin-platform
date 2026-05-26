@@ -4,7 +4,10 @@
       "PowerShell(npm install *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m 'chore: initialise ADMIN platform monorepo *)"
+      "Bash(git commit -m 'chore: initialise ADMIN platform monorepo *)",
+      "Bash(git commit -m 'chore: add .gitattributes to enforce LF line endings cross-platform *)",
+      "PowerShell(New-Item *)",
+      "Bash(git commit -m 'feat\\(config\\): set up shared TypeScript, ESLint, and Prettier configuration *)"
     ]
   }
 }

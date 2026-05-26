@@ -2,3 +2,8 @@ packages:
   - 'apps/*'
   - 'services/*'
   - 'packages/*'
+
+# Build script approvals (pnpm security policy)
+# esbuild requires a native binary build step — approved for tsx transpilation
+onlyBuiltDependencies:
+  - esbuild

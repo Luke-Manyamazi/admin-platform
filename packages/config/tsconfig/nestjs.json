@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "ADMIN NestJS",
+  "extends": "./base.json",
+  "compilerOptions": {
+    // ─── NestJS decorator support — REQUIRED ─────────────────────────────────
+    // emitDecoratorMetadata powers NestJS dependency injection.
+    // Without this, @Injectable(), @Controller(), etc. will not work.
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    // ─── Module system ────────────────────────────────────────────────────────
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2022",
+
+    // ─── Incremental builds ───────────────────────────────────────────────────
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+
+    // ─── Relaxed for service development ─────────────────────────────────────
+    // NestJS generated stubs and module scaffolding often have unused params
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
+}

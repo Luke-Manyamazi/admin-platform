@@ -7,5 +7,9 @@
     "build": "echo 'Config package — no build step'",
     "lint": "echo 'Config package — no lint step'",
     "type-check": "echo 'Config package — no type-check step'"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "typescript-eslint": "^8.20.0"
   }
 }

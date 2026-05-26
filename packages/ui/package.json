@@ -13,5 +13,12 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "type-check": "tsc --noEmit",
     "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "@admin-platform/config": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }

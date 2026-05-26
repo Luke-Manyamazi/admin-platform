@@ -16,5 +16,8 @@
     "lint": "echo 'No lint for database package'",
     "type-check": "tsc --noEmit",
     "clean": "rimraf node_modules/.prisma"
+  },
+  "devDependencies": {
+    "@admin-platform/config": "workspace:*"
   }
 }

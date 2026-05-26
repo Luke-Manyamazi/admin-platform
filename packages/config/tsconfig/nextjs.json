@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "ADMIN Next.js 14",
+  "extends": "./base.json",
+  "compilerOptions": {
+    // ─── Next.js requires these overrides ────────────────────────────────────
+    "target": "ES2017",
+    "lib": ["ES2017", "DOM", "DOM.Iterable"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+
+    // ─── JSX ─────────────────────────────────────────────────────────────────
+    "jsx": "preserve",
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+
+    // ─── Next.js handles bundling — disable emit ──────────────────────────────
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "incremental": true,
+
+    // ─── Next.js plugin (enables App Router type checking) ────────────────────
+    "plugins": [{ "name": "next" }],
+
+    // ─── Relaxed for React development ───────────────────────────────────────
+    // Unused vars are common during active UI development
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
+}

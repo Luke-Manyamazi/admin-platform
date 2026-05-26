@@ -12,5 +12,8 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "@admin-platform/config": "workspace:*"
   }
 }

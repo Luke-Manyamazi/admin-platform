@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "ADMIN Base",
+  "compilerOptions": {
+    // ─── Compilation target ───────────────────────────────────────────────────
+    "target": "ES2022",
+    "lib": ["ES2022"],
+
+    // ─── Module resolution ────────────────────────────────────────────────────
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // ─── Strict type checking ─────────────────────────────────────────────────
+    // These are non-negotiable for the ADMIN platform.
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // ─── Output ───────────────────────────────────────────────────────────────
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    // ─── Interop ──────────────────────────────────────────────────────────────
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}

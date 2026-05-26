@@ -10,5 +10,8 @@
     "type-check": "tsc --noEmit",
     "start": "next start --port 3000",
     "clean": "rimraf .next out"
+  },
+  "devDependencies": {
+    "@admin-platform/config": "workspace:*"
   }
 }

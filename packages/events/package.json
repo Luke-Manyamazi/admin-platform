@@ -2,7 +2,7 @@
   "name": "@admin-platform/events",
   "version": "0.0.1",
   "private": true,
-  "description": "ADMIN Events — Typed AWS EventBridge event definitions with source, detailType, and detail shape",
+  "description": "ADMIN Events — Typed AWS EventBridge event definitions",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -13,5 +13,8 @@
     "lint": "eslint \"src/**/*.ts\"",
     "type-check": "tsc --noEmit",
     "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "@admin-platform/config": "workspace:*"
   }
 }
