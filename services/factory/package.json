@@ -1,0 +1,16 @@
+{
+  "name": "@admin-platform/factory-service",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ADMIN Factory Service — Factory registry and verification microservice (NestJS, port 3010)",
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "type-check": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "clean": "rimraf dist"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@admin-platform/database",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ADMIN Database — Prisma schema, migrations, and generated client (PostgreSQL)",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx src/seed.ts",
+    "lint": "echo 'No lint for database package'",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf node_modules/.prisma"
+  }
+}

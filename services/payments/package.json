@@ -1,0 +1,16 @@
+{
+  "name": "@admin-platform/payments-service",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ADMIN Payments Service — Escrow payment microservice (NestJS + Peach Payments + Flutterwave, port 3013)",
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "type-check": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "clean": "rimraf dist"
+  }
+}

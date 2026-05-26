@@ -1,0 +1,11 @@
+{
+  "name": "@admin-platform/config",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ADMIN Config — Shared ESLint, TypeScript, and Prettier configuration for all workspaces",
+  "scripts": {
+    "build": "echo 'Config package — no build step'",
+    "lint": "echo 'Config package — no lint step'",
+    "type-check": "echo 'Config package — no type-check step'"
+  }
+}

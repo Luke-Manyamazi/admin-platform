@@ -1,0 +1,14 @@
+{
+  "name": "@admin-platform/admin",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ADMIN Ops — Internal operations dashboard for Camluk team (Next.js 14 App Router)",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 3002",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "start": "next start --port 3002",
+    "clean": "rimraf .next out"
+  }
+}

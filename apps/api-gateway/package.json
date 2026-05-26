@@ -1,0 +1,16 @@
+{
+  "name": "@admin-platform/api-gateway",
+  "version": "0.0.1",
+  "private": true,
+  "description": "ADMIN API Gateway — Single entry point for all external requests (NestJS)",
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "type-check": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "clean": "rimraf dist"
+  }
+}
