@@ -11,7 +11,25 @@
     "start": "next start --port 3000",
     "clean": "rimraf .next out"
   },
+  "dependencies": {
+    "@admin-platform/types": "workspace:*",
+    "@admin-platform/ui": "workspace:*",
+    "axios": "^1.7.9",
+    "next": "14.2.30",
+    "next-auth": "5.0.0-beta.22",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
-    "@admin-platform/config": "workspace:*"
+    "@admin-platform/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.0"
   }
 }

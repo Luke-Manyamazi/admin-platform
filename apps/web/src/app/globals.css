@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Root defaults ──────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Prevent layout shift from scrollbar appearing */
+  overflow-y: scroll;
+}
+
+body {
+  background-color: #060809;
+  color: #E6EDF3;
+  font-family: var(--font-body), ui-sans-serif, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar styling ──────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #21262D;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #30363D;
+}
+
+/* ─── Focus ring ─────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid #E8A020;
+  outline-offset: 2px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+
+::selection {
+  background-color: rgba(232, 160, 32, 0.25);
+  color: #E6EDF3;
+}
