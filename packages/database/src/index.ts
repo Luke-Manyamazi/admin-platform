@@ -27,7 +27,7 @@
  *
  * ─── For Prisma input/filter types ───────────────────────────────────────────
  *
- *   import type { Prisma } from '@admin-platform/database';
+ *   import { Prisma } from '@admin-platform/database';
  *
  *   // Repository create input:
  *   type CreateFactoryInput = Prisma.FactoryCreateInput;
@@ -45,9 +45,25 @@
 
 export { PrismaClient } from './generated/client';
 
-// ─── Prisma namespace — create/update/filter input types ─────────────────────
+// ─── Prisma namespace — create/update/filter input types + runtime errors ────
+// Exported as a VALUE (not type-only) so that Prisma.PrismaClientKnownRequestError
+// is available at runtime for `instanceof` checks in exception filters.
 
-export type { Prisma } from './generated/client';
+export { Prisma } from './generated/client';
+
+// ─── Model types — row shapes returned by Prisma queries ─────────────────────
+// Import these in repository return types instead of Prisma.XxxGetPayload<{}>.
+
+export type {
+  User,
+  Factory,
+  FactoryDocument,
+  Order,
+  SubOrder,
+  OrderEvent,
+  Payment,
+  Notification,
+} from './generated/client';
 
 // ─── Singleton — scripts and seed files only ─────────────────────────────────
 // DO NOT import this in NestJS services — use PrismaService instead.

@@ -1,4 +1,4 @@
-packages:
+﻿packages:
   - 'apps/*'
   - 'services/*'
   - 'packages/*'
@@ -6,19 +6,22 @@ packages:
 # Build script approvals (pnpm v11 security policy).
 # Packages listed under allowBuilds are explicitly permitted to run
 # postinstall / build scripts. Set to true = allowed, false = blocked.
-#   esbuild         — native binary required by tsx / esbuild bundler
-#   prisma          — generates query-engine binary on install
-#   @prisma/client  — runs postinstall to wire the generated client
-#   @prisma/engines — downloads the Rust query-engine binary for this platform
+#   esbuild         - native binary required by tsx / esbuild bundler
+#   prisma          - generates query-engine binary on install
+#   @prisma/client  - runs postinstall to wire the generated client
+#   @prisma/engines - downloads the Rust query-engine binary for this platform
+#   @nestjs/core    - generates NestJS module metadata on install
 allowBuilds:
   esbuild: true
   prisma: true
   '@prisma/client': true
   '@prisma/engines': true
+  '@nestjs/core': true
 
-# Legacy list — kept for pnpm versions that read onlyBuiltDependencies
+# Legacy list - kept for pnpm versions that read onlyBuiltDependencies
 onlyBuiltDependencies:
   - esbuild
   - prisma
   - '@prisma/client'
   - '@prisma/engines'
+  - '@nestjs/core'
