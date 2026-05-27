@@ -5,8 +5,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "paths": {
-      "@admin-platform/types": ["../../packages/types/src/index.ts"],
-      "@admin-platform/events": ["../../packages/events/src/index.ts"]
+      "@admin-platform/types":    ["../../packages/types/src/index.ts"],
+      "@admin-platform/events":   ["../../packages/events/src/index.ts"],
+      "@admin-platform/database": ["../../packages/database/src/index.ts"]
     }
   },
   "include": ["src/**/*", "test/**/*"],
