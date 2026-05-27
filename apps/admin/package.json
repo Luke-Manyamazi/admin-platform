@@ -5,7 +5,7 @@
   "description": "ADMIN Ops — Internal operations dashboard for Camluk team (Next.js 14 App Router)",
   "scripts": {
     "build": "next build",
-    "dev": "next dev --port 3002",
+    "dev": "echo \"[admin] Not yet built — run Step 13 to scaffold apps/admin\" && exit 0",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "start": "next start --port 3002",
