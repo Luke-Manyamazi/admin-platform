@@ -1,12 +1,5 @@
-import type { NextConfig } from 'next';
-
-/**
- * Next.js configuration for the ADMIN Connect buyer portal.
- *
- * Port: 3000
- * API Gateway: http://localhost:3001/api/v1
- */
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
 
   // Transpile monorepo packages so Next.js can process their TypeScript
@@ -28,7 +21,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/proxy/:path*',
-        destination: `${process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:3001/api/v1'}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1'}/:path*`,
       },
     ];
   },

@@ -4,10 +4,17 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@admin-platform/ui": ["../../packages/ui/src/index.ts"],
-      "@admin-platform/types": ["../../packages/types/src/index.ts"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@admin-platform/ui": [
+        "../../packages/ui/src/index.ts"
+      ],
+      "@admin-platform/types": [
+        "../../packages/types/src/index.ts"
+      ]
+    },
+    "isolatedModules": true
   },
   "include": [
     "next-env.d.ts",
@@ -16,5 +23,7 @@
     ".next/types/**/*.ts",
     "src/**/*"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
