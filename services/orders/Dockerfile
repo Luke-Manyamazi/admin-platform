@@ -6,7 +6,7 @@
 
 # ── Stage 1: base ─────────────────────────────────────────────────────────────
 # Shared foundation: Node 20 Alpine + pnpm 11.3.0
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
 
@@ -31,7 +31,7 @@ RUN pnpm run build --filter=@admin-platform/orders-service
 
 # Produce a self-contained production bundle at /deploy/orders.
 # pnpm deploy copies the package + its prod deps (no devDeps, no other apps).
-RUN pnpm deploy --filter=@admin-platform/orders-service --prod /deploy/orders
+RUN pnpm deploy --filter=@admin-platform/orders-service --prod /deploy/orders --legacy
 
 # Re-run prisma generate inside the deployed bundle so the Prisma query engine
 # binary is present and targeted at the correct platform (linux-musl for Alpine).
@@ -39,7 +39,7 @@ RUN cd /deploy/orders && npx prisma generate
 
 # ── Stage 4: runner ───────────────────────────────────────────────────────────
 # Minimal production image — only the pruned bundle, no build toolchain.
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 # Re-enable corepack so pnpm is available for potential runtime scripts.
 RUN corepack enable && corepack prepare pnpm@11.3.0 --activate

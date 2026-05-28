@@ -6,7 +6,7 @@
 
 # ── Stage 1: base ─────────────────────────────────────────────────────────────
 # Shared foundation: Node 20 Alpine + pnpm 11.3.0
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
 
@@ -30,11 +30,11 @@ RUN pnpm run build --filter=@admin-platform/api-gateway
 
 # Produce a self-contained production bundle at /deploy/api-gateway.
 # pnpm deploy copies the package + its prod deps (no devDeps, no other apps).
-RUN pnpm deploy --filter=@admin-platform/api-gateway --prod /deploy/api-gateway
+RUN pnpm deploy --filter=@admin-platform/api-gateway --prod /deploy/api-gateway --legacy
 
 # ── Stage 4: runner ───────────────────────────────────────────────────────────
 # Minimal production image — only the pruned bundle, no build toolchain.
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 # Re-enable corepack so pnpm is available for potential runtime scripts.
 RUN corepack enable && corepack prepare pnpm@11.3.0 --activate

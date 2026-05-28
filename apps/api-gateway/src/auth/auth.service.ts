@@ -2,7 +2,6 @@ import {
   Injectable,
   ConflictException,
   UnauthorizedException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
@@ -49,11 +48,6 @@ export class AuthService {
 
     if (existing) {
       throw new ConflictException('An account with this email already exists');
-    }
-
-    // ADMIN accounts cannot be created via the API
-    if (dto.role === Role.ADMIN) {
-      throw new ForbiddenException('ADMIN accounts cannot be self-registered');
     }
 
     const passwordHash = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
