@@ -1,0 +1,59 @@
+# ── Version control ──────────────────────────────────────────────────────────
+.git
+.gitignore
+.gitattributes
+
+# ── Environment files (never bake secrets into an image) ─────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Dependencies (reinstalled inside the image) ──────────────────────────────
+**/node_modules
+
+# ── Build artefacts ──────────────────────────────────────────────────────────
+**/dist
+**/.next
+**/out
+**/build
+
+# ── Test & coverage output ───────────────────────────────────────────────────
+**/coverage
+**/__tests__
+**/*.test.ts
+**/*.spec.ts
+**/*.test.tsx
+**/*.spec.tsx
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+**/*.log
+**/logs
+**/*.log.*
+**/dev-server.log
+
+# ── OS artefacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editor / IDE ─────────────────────────────────────────────────────────────
+.vscode
+.idea
+*.swp
+*.swo
+
+# ── CI/CD & Tooling ──────────────────────────────────────────────────────────
+.claude
+.turbo
+Dockerfile*
+docker-compose*
+infrastructure/
+
+# ── TypeScript incremental build info ────────────────────────────────────────
+**/*.tsbuildinfo
+
+# ── Prisma generated client (regenerated in builder stage) ───────────────────
+packages/database/src/generated
+
+# ── Misc ─────────────────────────────────────────────────────────────────────
+README.md
+*.md

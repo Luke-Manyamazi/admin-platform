@@ -16,12 +16,12 @@ build/
 coverage/
 
 # ─── Environment Variables ─────────────────────────────────────────────────────
+# Block every .env variant (.env.local, .env.production, .env.staging, etc.)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-# Keep .env.example committed — it documents required vars
+.env.*
+# Whitelist example files — they document required vars but hold no real secrets
+!.env.example
+!**/.env.example
 
 # ─── Prisma ────────────────────────────────────────────────────────────────────
 packages/database/node_modules/
