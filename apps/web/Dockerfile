@@ -31,8 +31,11 @@ RUN pnpm install --frozen-lockfile
 # the monorepo tree at /workspace/apps/web/.next.
 FROM deps AS builder
 
-# Disable Next.js telemetry during the build.
-ENV NEXT_TELEMETRY_DISABLED=1
+# NEXT_PUBLIC_* vars are embedded by `next build` at compile time.
+# Pass via: docker build --build-arg NEXT_PUBLIC_API_URL=https://api.example.com
+ARG NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
+    NEXT_TELEMETRY_DISABLED=1
 
 # Build only this app (Turborepo resolves the ^build dependencies first,
 # e.g. @admin-platform/ui and @admin-platform/types).

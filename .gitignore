@@ -19,9 +19,11 @@ coverage/
 # Block every .env variant (.env.local, .env.production, .env.staging, etc.)
 .env
 .env.*
-# Whitelist example files — they document required vars but hold no real secrets
+# Whitelist *.example files — they document required vars but hold no real secrets
 !.env.example
+!.env.*.example
 !**/.env.example
+!**/.env.*.example
 
 # ─── Prisma ────────────────────────────────────────────────────────────────────
 packages/database/node_modules/
