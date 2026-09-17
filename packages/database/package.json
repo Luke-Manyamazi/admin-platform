@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "description": "ADMIN Database — Prisma schema, migrations, and generated client (PostgreSQL / AWS RDS)",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "prisma generate",
+    "build": "prisma generate && tsc -p tsconfig.json && node scripts/copy-generated-client.mjs",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
@@ -16,7 +16,7 @@
     "db:reset": "prisma migrate reset",
     "lint": "echo 'No lint for database package'",
     "type-check": "tsc --noEmit",
-    "clean": "rimraf src/generated node_modules/.prisma"
+    "clean": "rimraf src/generated dist node_modules/.prisma"
   },
   "dependencies": {
     "@admin-platform/types": "workspace:*",
