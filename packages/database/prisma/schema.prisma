@@ -1,24 +1,5 @@
-// ============================================================
-// ADMIN Platform — Prisma Schema
-// Camluk Technologies (South Africa)
-//
-// Targeting: PostgreSQL (AWS RDS af-south-1)
-// Generated client output: ../src/generated/client
-//
-// Money convention: ALL monetary values are integers in ZAR CENTS.
-//   minimumOrderValue: 125000  = R 1,250.00
-//   targetUnitPrice:   3500    = R 35.00
-//   NEVER store floats for money.
-//
-// Enum convention: Values match @admin-platform/types enums exactly.
-//   Prisma generates string unions; our types use `as const` objects
-//   with the same string values — fully compatible.
-// ============================================================
-
 generator client {
   provider = "prisma-client-js"
-  // Custom output path ensures the client is bundled with this package
-  // and avoids pnpm node_modules hoisting issues in the monorepo.
   output   = "../src/generated/client"
 }
 
@@ -27,7 +8,213 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Enums ────────────────────────────────────────────────────────────────────
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(BUYER)
+  firstName    String
+  lastName     String
+  phone        String?
+  country      String?
+  isVerified   Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  factories    Factory[]
+  orders       Order[]
+
+  @@index([role])
+  @@index([isVerified])
+  @@map("users")
+}
+
+model Factory {
+  id                    String            @id @default(cuid())
+  name                  String
+  registrationNumber    String            @unique
+  country               String
+  region                String
+  address               String
+  phone                 String
+  email                 String
+  website               String?
+  description           String?
+  capabilities          String[]
+  certifications        String[]
+  /// Monthly production capacity in units
+  capacityUnitsPerMonth Int
+  /// Minimum order value in ZAR cents (integer — never float)
+  minimumOrderValue     Int
+  /// Trust score 0–100 calculated by Cassava AI engine after each order
+  trustScore            Float             @default(0)
+  status                FactoryStatus     @default(PENDING)
+  ownerId               String
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  owner                 User              @relation(fields: [ownerId], references: [id])
+  documents             FactoryDocument[]
+  subOrders             SubOrder[]
+
+  @@index([ownerId])
+  @@index([status])
+  @@index([country, region])
+  @@index([trustScore])
+  @@map("factories")
+}
+
+model FactoryDocument {
+  id         String    @id @default(cuid())
+  factoryId  String
+  /// ISO_CERTIFICATE | REGISTRATION | TAX_CLEARANCE | COMPLIANCE | OTHER
+  type       String
+  /// S3 pre-signed URL or permanent public URL
+  fileUrl    String
+  fileName   String
+  /// File size in bytes
+  fileSize   Int
+  verified   Boolean   @default(false)
+  verifiedAt DateTime?
+  /// Optional expiry — e.g. ISO certificates expire annually
+  expiresAt  DateTime?
+  uploadedAt DateTime  @default(now())
+  factory    Factory   @relation(fields: [factoryId], references: [id], onDelete: Cascade)
+
+  @@index([factoryId])
+  @@index([verified])
+  @@map("factory_documents")
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  /// Auto-generated format: ADMIN-{YEAR}-{5-digit-seq}  e.g. ADMIN-2024-00001
+  orderNumber     String       @unique
+  buyerId         String
+  status          OrderStatus  @default(DRAFT)
+  productCategory String
+  productName     String
+  /// Flexible product spec JSON — dimensions, materials, tolerances, etc.
+  specifications  Json
+  quantityUnits   Int
+  unitOfMeasure   String
+  /// Buyer's target price per unit in ZAR cents (integer — never float)
+  targetUnitPrice Int
+  /// Total order value in ZAR cents — quantityUnits × targetUnitPrice
+  totalValue      Int
+  currency        String       @default("ZAR")
+  deadline        DateTime
+  deliveryAddress String
+  deliveryCountry String
+  notes           String?
+  /// Immutable trace ID — links all EventBridge events for this order
+  traceOrderId    String       @unique @default(cuid())
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  events          OrderEvent[]
+  buyer           User         @relation(fields: [buyerId], references: [id])
+  payments        Payment[]
+  subOrders       SubOrder[]
+
+  @@index([buyerId])
+  @@index([status])
+  @@index([traceOrderId])
+  @@index([productCategory])
+  @@index([deadline])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model SubOrder {
+  id                     String         @id @default(cuid())
+  orderId                String
+  factoryId              String
+  units                  Int
+  status                 SubOrderStatus @default(PENDING_ACCEPTANCE)
+  deadline               DateTime
+  /// Snapshotted at allocation time — immutable audit record
+  trustScoreAtAllocation Float
+  notes                  String?
+  /// 0–100 — updated by factory via the portal
+  progressPercent        Int            @default(0)
+  completedAt            DateTime?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  factory                Factory        @relation(fields: [factoryId], references: [id])
+  order                  Order          @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([factoryId])
+  @@index([status])
+  @@map("sub_orders")
+}
+
+/// Immutable audit log of every state change on an order.
+/// Records are never updated or deleted — append only.
+model OrderEvent {
+  id           String   @id @default(cuid())
+  orderId      String
+  /// e.g. ORDER_PLACED, ORDER_ALLOCATED, SUBORDER_ACCEPTED
+  type         String
+  /// Full event payload snapshot — what the EventBridge event contained
+  payload      Json
+  /// Matches the traceOrderId from the triggering EventBridge event
+  traceOrderId String
+  actorId      String?
+  actorRole    String?
+  createdAt    DateTime @default(now())
+  order        Order    @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([traceOrderId])
+  @@index([type])
+  @@map("order_events")
+}
+
+model Payment {
+  id               String        @id @default(cuid())
+  orderId          String
+  /// Total amount paid by buyer in ZAR cents (integer — never float)
+  amount           Int
+  /// Camluk platform commission in ZAR cents (COMMISSION_RATE_PERCENT % of amount)
+  commissionAmount Int
+  /// Net payout to factories in ZAR cents (amount - commissionAmount)
+  factoryPayout    Int
+  currency         String        @default("ZAR")
+  status           PaymentStatus @default(PENDING)
+  /// PEACH_PAYMENTS | FLUTTERWAVE
+  gatewayProvider  String
+  gatewayReference String?
+  /// Raw gateway webhook response — stored for audit and dispute resolution
+  gatewayResponse  Json?
+  heldAt           DateTime?
+  releasedAt       DateTime?
+  refundedAt       DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  order            Order         @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([status])
+  @@index([gatewayReference])
+  @@map("payments")
+}
+
+model Notification {
+  id        String              @id @default(cuid())
+  userId    String
+  /// NotificationType string — e.g. ORDER_PLACED, FACTORY_VERIFIED
+  type      String
+  channel   NotificationChannel
+  subject   String?
+  body      String
+  status    NotificationStatus  @default(PENDING)
+  sentAt    DateTime?
+  createdAt DateTime            @default(now())
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@map("notifications")
+}
 
 enum Role {
   BUYER
@@ -83,235 +270,4 @@ enum NotificationStatus {
   PENDING
   SENT
   FAILED
-}
-
-// ─── User ─────────────────────────────────────────────────────────────────────
-
-model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  role         Role     @default(BUYER)
-  firstName    String
-  lastName     String
-  phone        String?
-  country      String?
-  isVerified   Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  factories Factory[]
-  orders    Order[]
-
-  @@index([role])
-  @@index([isVerified])
-  @@map("users")
-}
-
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
-model Factory {
-  id                    String        @id @default(cuid())
-  name                  String
-  registrationNumber    String        @unique
-  country               String
-  region                String
-  address               String
-  phone                 String
-  email                 String
-  website               String?
-  description           String?
-  capabilities          String[]
-  certifications        String[]
-  /// Monthly production capacity in units
-  capacityUnitsPerMonth Int
-  /// Minimum order value in ZAR cents (integer — never float)
-  minimumOrderValue     Int
-  /// Trust score 0–100 calculated by Cassava AI engine after each order
-  trustScore            Float         @default(0)
-  status                FactoryStatus @default(PENDING)
-  ownerId               String
-  createdAt             DateTime      @default(now())
-  updatedAt             DateTime      @updatedAt
-
-  owner     User              @relation(fields: [ownerId], references: [id])
-  documents FactoryDocument[]
-  subOrders SubOrder[]
-
-  @@index([ownerId])
-  @@index([status])
-  @@index([country, region])
-  @@index([trustScore])
-  @@map("factories")
-}
-
-// ─── Factory Document ──────────────────────────────────────────────────────────
-
-model FactoryDocument {
-  id         String    @id @default(cuid())
-  factoryId  String
-  /// ISO_CERTIFICATE | REGISTRATION | TAX_CLEARANCE | COMPLIANCE | OTHER
-  type       String
-  /// S3 pre-signed URL or permanent public URL
-  fileUrl    String
-  fileName   String
-  /// File size in bytes
-  fileSize   Int
-  verified   Boolean   @default(false)
-  verifiedAt DateTime?
-  /// Optional expiry — e.g. ISO certificates expire annually
-  expiresAt  DateTime?
-  uploadedAt DateTime  @default(now())
-
-  factory Factory @relation(fields: [factoryId], references: [id], onDelete: Cascade)
-
-  @@index([factoryId])
-  @@index([verified])
-  @@map("factory_documents")
-}
-
-// ─── Order ─────────────────────────────────────────────────────────────────────
-
-model Order {
-  id              String      @id @default(cuid())
-  /// Auto-generated format: ADMIN-{YEAR}-{5-digit-seq}  e.g. ADMIN-2024-00001
-  orderNumber     String      @unique
-  buyerId         String
-  status          OrderStatus @default(DRAFT)
-  productCategory String
-  productName     String
-  /// Flexible product spec JSON — dimensions, materials, tolerances, etc.
-  specifications  Json
-  quantityUnits   Int
-  unitOfMeasure   String
-  /// Buyer's target price per unit in ZAR cents (integer — never float)
-  targetUnitPrice Int
-  /// Total order value in ZAR cents — quantityUnits × targetUnitPrice
-  totalValue      Int
-  currency        String      @default("ZAR")
-  deadline        DateTime
-  deliveryAddress String
-  deliveryCountry String
-  notes           String?
-  /// Immutable trace ID — links all EventBridge events for this order
-  traceOrderId    String      @unique @default(cuid())
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  buyer     User         @relation(fields: [buyerId], references: [id])
-  subOrders SubOrder[]
-  payments  Payment[]
-  events    OrderEvent[]
-
-  @@index([buyerId])
-  @@index([status])
-  @@index([traceOrderId])
-  @@index([productCategory])
-  @@index([deadline])
-  @@index([createdAt])
-  @@map("orders")
-}
-
-// ─── SubOrder ─────────────────────────────────────────────────────────────────
-
-model SubOrder {
-  id                    String         @id @default(cuid())
-  orderId               String
-  factoryId             String
-  units                 Int
-  status                SubOrderStatus @default(PENDING_ACCEPTANCE)
-  deadline              DateTime
-  /// Snapshotted at allocation time — immutable audit record
-  trustScoreAtAllocation Float
-  notes                 String?
-  /// 0–100 — updated by factory via the portal
-  progressPercent       Int            @default(0)
-  completedAt           DateTime?
-  createdAt             DateTime       @default(now())
-  updatedAt             DateTime       @updatedAt
-
-  order   Order   @relation(fields: [orderId], references: [id])
-  factory Factory @relation(fields: [factoryId], references: [id])
-
-  @@index([orderId])
-  @@index([factoryId])
-  @@index([status])
-  @@map("sub_orders")
-}
-
-// ─── OrderEvent ────────────────────────────────────────────────────────────────
-
-/// Immutable audit log of every state change on an order.
-/// Records are never updated or deleted — append only.
-model OrderEvent {
-  id           String   @id @default(cuid())
-  orderId      String
-  /// e.g. ORDER_PLACED, ORDER_ALLOCATED, SUBORDER_ACCEPTED
-  type         String
-  /// Full event payload snapshot — what the EventBridge event contained
-  payload      Json
-  /// Matches the traceOrderId from the triggering EventBridge event
-  traceOrderId String
-  actorId      String?
-  actorRole    String?
-  createdAt    DateTime @default(now())
-
-  order Order @relation(fields: [orderId], references: [id])
-
-  @@index([orderId])
-  @@index([traceOrderId])
-  @@index([type])
-  @@map("order_events")
-}
-
-// ─── Payment ──────────────────────────────────────────────────────────────────
-
-model Payment {
-  id               String        @id @default(cuid())
-  orderId          String
-  /// Total amount paid by buyer in ZAR cents (integer — never float)
-  amount           Int
-  /// Camluk platform commission in ZAR cents (COMMISSION_RATE_PERCENT % of amount)
-  commissionAmount Int
-  /// Net payout to factories in ZAR cents (amount - commissionAmount)
-  factoryPayout    Int
-  currency         String        @default("ZAR")
-  status           PaymentStatus @default(PENDING)
-  /// PEACH_PAYMENTS | FLUTTERWAVE
-  gatewayProvider  String
-  gatewayReference String?
-  /// Raw gateway webhook response — stored for audit and dispute resolution
-  gatewayResponse  Json?
-  heldAt           DateTime?
-  releasedAt       DateTime?
-  refundedAt       DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-
-  order Order @relation(fields: [orderId], references: [id])
-
-  @@index([orderId])
-  @@index([status])
-  @@index([gatewayReference])
-  @@map("payments")
-}
-
-// ─── Notification ─────────────────────────────────────────────────────────────
-
-model Notification {
-  id        String              @id @default(cuid())
-  userId    String
-  /// NotificationType string — e.g. ORDER_PLACED, FACTORY_VERIFIED
-  type      String
-  channel   NotificationChannel
-  subject   String?
-  body      String
-  status    NotificationStatus  @default(PENDING)
-  sentAt    DateTime?
-  createdAt DateTime            @default(now())
-
-  @@index([userId])
-  @@index([status])
-  @@index([type])
-  @@map("notifications")
 }

@@ -4,12 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "dist/**",
-        "build/**"
-      ],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "build/**"],
       "env": [
         "NODE_ENV",
         "DATABASE_URL",
@@ -44,10 +39,12 @@
       "outputs": ["node_modules/.prisma/**"]
     },
     "db:migrate": {
-      "cache": false
+      "cache": false,
+      "env": ["DATABASE_URL"]
     },
     "db:migrate:deploy": {
-      "cache": false
+      "cache": false,
+      "env": ["DATABASE_URL"]
     },
     "clean": {
       "cache": false
