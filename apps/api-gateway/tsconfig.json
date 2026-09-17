@@ -2,12 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../packages/config/tsconfig/nestjs.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "paths": {
-      "@admin-platform/types":    ["../../packages/types/src/index.ts"],
-      "@admin-platform/events":   ["../../packages/events/src/index.ts"],
-      "@admin-platform/database": ["../../packages/database/src/index.ts"]
-    }
+    "outDir": "./dist"
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]
