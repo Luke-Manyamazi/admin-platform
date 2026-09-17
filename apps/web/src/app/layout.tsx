@@ -1,28 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import { Bebas_Neue, Syne, JetBrains_Mono } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import './globals.css';
-
-// ─── Fonts ────────────────────────────────────────────────────────────────────
-
-const bebasNeue = Bebas_Neue({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
-const syne = Syne({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-});
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 
@@ -61,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${bebasNeue.variable} ${syne.variable} ${jetBrainsMono.variable}`}
+      className="dark"
     >
       <body>
         <Providers>{children}</Providers>

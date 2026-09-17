@@ -1,9 +1,16 @@
+@import '@fontsource/bebas-neue/400.css';
+@import '@fontsource-variable/syne';
+@import '@fontsource-variable/jetbrains-mono';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   color-scheme: dark;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Syne Variable', ui-sans-serif, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 }
 
 *,
