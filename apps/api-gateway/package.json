@@ -4,9 +4,9 @@
   "private": true,
   "description": "ADMIN API Gateway — Single entry point for all external requests (NestJS, port 3001)",
   "scripts": {
-    "build": "nest build",
-    "start": "node dist/main",
-    "start:dev": "pnpm --filter @admin-platform/types build && pnpm --filter @admin-platform/events build && pnpm --filter @admin-platform/database build && nest start --watch",
+    "build": "nest build --path tsconfig.build.json",
+    "start": "node ./dist/main.js",
+    "start:dev": "pnpm --filter @admin-platform/types build && pnpm --filter @admin-platform/events build && pnpm --filter @admin-platform/database build && nest start --watch --path tsconfig.build.json",
     "type-check": "tsc --noEmit",
     "lint": "eslint src",
     "test": "jest",
