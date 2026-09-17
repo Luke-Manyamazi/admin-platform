@@ -5,6 +5,7 @@
   "entryFile": "main",
   "compilerOptions": {
     "webpack": true,
+    "webpackConfigPath": "./webpack.config.js",
     "deleteOutDir": true
   }
 }
