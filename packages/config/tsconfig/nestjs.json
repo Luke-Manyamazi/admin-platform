@@ -14,10 +14,6 @@
     "moduleResolution": "node",
     "target": "ES2022",
 
-    // ─── Incremental builds ───────────────────────────────────────────────────
-    "incremental": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-
     // ─── Relaxed for service development ─────────────────────────────────────
     // NestJS generated stubs and module scaffolding often have unused params
     "noUnusedLocals": false,
