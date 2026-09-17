@@ -45,6 +45,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @admin-platform/types build
+          pnpm --filter @admin-platform/events build
+          pnpm --filter @admin-platform/database build
+
       - name: Build API gateway
         shell: bash
         run: |
@@ -58,6 +64,9 @@ jobs:
           name: api-gateway-build-log
           path: api-gateway-build.log
           if-no-files-found: ignore
+
+      - name: Type-check API gateway
+        run: pnpm --filter @admin-platform/api-gateway type-check
 
       - name: Verify gateway entrypoint
         run: test -f apps/api-gateway/dist/main.js
