@@ -59,8 +59,8 @@ async function bootstrap(): Promise<void> {
   } else {
     app.enableCors({
       origin: [
-        process.env['BUYER_PORTAL_ORIGIN']   ?? 'https://admin-platform.camluk.com',
-        process.env['ADMIN_PORTAL_ORIGIN']   ?? 'https://admin.camluk.com',
+        process.env['BUYER_PORTAL_ORIGIN'] ?? 'https://admin-platform.camluk.com',
+        process.env['ADMIN_PORTAL_ORIGIN'] ?? 'https://admin.camluk.com',
       ],
       credentials: true,
     });
@@ -71,14 +71,20 @@ async function bootstrap(): Promise<void> {
 }
 
 bootstrap().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  const stack = error instanceof Error ? error.stack : undefined;
+
   process.stderr.write(
     JSON.stringify({
       timestamp: new Date().toISOString(),
       level: 'fatal',
       service: SERVICE,
       message: 'Failed to start API gateway',
-      error: error instanceof Error ? error.message : String(error),
+      error: message,
+      ...(stack ? { stack } : {}),
     }) + '\n',
   );
-  process.exit(1);
+
+  // Let Node flush stderr naturally instead of terminating synchronously.
+  process.exitCode = 1;
 });
