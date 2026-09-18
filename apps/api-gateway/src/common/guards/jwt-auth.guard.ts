@@ -1,6 +1,7 @@
 import {
   Injectable,
   CanActivate,
+  Inject,
   type ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -22,7 +23,7 @@ export interface JwtPayload {
 export class JwtAuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly reflector: Reflector,
+    @Inject(Reflector) private readonly reflector: Reflector,
   ) {}
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
